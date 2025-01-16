@@ -13,10 +13,15 @@
 
 import machine
 import time
+from machine import Pin, I2C
 
 from micropython import const
 import framebuf
 
+#SDA PIN
+SDA_PIN = GP8
+#SCL PIN
+SCL PIN = GP9
 
 # register definitions
 SET_CONTRAST = const(0x81)
@@ -137,7 +142,7 @@ class SSD1306_I2C(SSD1306):
 WIDTH = 128
 HEIGHT = 64
 
-i2c = machine.I2C(0)
+i2c = machine.I2C(1, sda=Pin(2), scl=Pin(3), freq=400000)
 address = 60
 res_reg=8
 oled = SSD1306_I2C(WIDTH, HEIGHT, i2c)
@@ -553,6 +558,18 @@ def nine(p):
     oled.line((p.x)+3,(p.y)+15,(p.x)+1,(p.y)+13,1)
     oled.show()
 
+def percent(p):
+    oled.line((p.x)+2, (p.y)+1, (p.x)+4, (p.y)+3, 1) 
+    oled.line((p.x)+4, (p.y)+3, (p.x)+2, (p.y)+5, 1)
+    oled.line((p.x)+2, (p.y)+5, (p.x), (p.y)+3, 1)
+    oled.line((p.x), (p.y)+3, (p.x)+2, (p.y)+1, 1)
+    oled.line((p.x)+9, (p.y)+10, (p.x)+11, (p.y)+12, 1)
+    oled.line((p.x)+11, (p.y)+12, (p.x)+9, (p.y)+14, 1)
+    oled.line((p.x)+9, (p.y)+14, (p.x)+7, (p.y)+12, 1)
+    oled.line((p.x)+7, (p.y)+12, (p.x)+9, (p.y)+10, 1)
+    oled.line((p.x)+9,(p.y)+1,(p.x)+1,(p.y)+15,1)
+    oled.show()
+
 def space(p):
     oled.show()
     
@@ -693,6 +710,8 @@ def display(text, posArray):
             equal(posArray[i])
         if text[i]==" ":
             space(posArray[i])
+        if text[i]=="%":
+            percent(posArray[i])
 
 
 
