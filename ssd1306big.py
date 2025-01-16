@@ -19,9 +19,9 @@ from micropython import const
 import framebuf
 
 #SDA PIN
-SDA_PIN = GP8
+SDA_PIN = 2
 #SCL PIN
-SCL PIN = GP9
+SCL_PIN = 3
 
 # register definitions
 SET_CONTRAST = const(0x81)
@@ -142,7 +142,7 @@ class SSD1306_I2C(SSD1306):
 WIDTH = 128
 HEIGHT = 64
 
-i2c = machine.I2C(1, sda=Pin(2), scl=Pin(3), freq=400000)
+i2c = machine.I2C(1, sda=Pin(SDA_PIN), scl=Pin(SCL_PIN), freq=400000)
 address = 60
 res_reg=8
 oled = SSD1306_I2C(WIDTH, HEIGHT, i2c)
